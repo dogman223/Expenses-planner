@@ -51,41 +51,50 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      //Add new transaction functionality which is showed on the modalBottomSheet:
-      child: Column(
-        children: <Widget>[
-          //Title of transaction input:
-          TextField(
-            decoration: InputDecoration(labelText: 'Title'),
-            controller: _titleController,
-            onSubmitted: (_) => _submitData(),
-          ),
-          //Amount of transaction input:
-          TextField(
-            decoration: InputDecoration(labelText: 'Amount'),
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            onSubmitted: (_) => _submitData(),
-          ),
-          //Choosing date of transaction functionality:
-          Row(
+    return SingleChildScrollView(
+      child: Card(
+        //Add new transaction functionality which is showed on the modalBottomSheet:
+        child: Container(
+          padding: EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+          child: Column(
             children: <Widget>[
-              Expanded(
-                child: Text(_selectedDate == null
-                    ? 'No Date Chosen!'
-                    : 'Picked Date: ${DateFormat('dd-MM-yyyy').format(_selectedDate)}'),
+              //Title of transaction input:
+              TextField(
+                decoration: InputDecoration(labelText: 'Title'),
+                controller: _titleController,
+                onSubmitted: (_) => _submitData(),
               ),
-              TextButton(
-                  onPressed: _presentDatePicker, child: Text("Choose date"))
+              //Amount of transaction input:
+              TextField(
+                decoration: InputDecoration(labelText: 'Amount'),
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _submitData(),
+              ),
+              //Choosing date of transaction functionality:
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? 'No Date Chosen!'
+                        : 'Picked Date: ${DateFormat('dd-MM-yyyy').format(_selectedDate)}'),
+                  ),
+                  TextButton(
+                      onPressed: _presentDatePicker, child: Text("Choose date"))
+                ],
+              ),
+              //Add transaction submit button:
+              ElevatedButton(
+                child: Text('Add Transaction'),
+                onPressed: _submitData,
+              )
             ],
           ),
-          //Add transaction submit button:
-          ElevatedButton(
-            child: Text('Add Transaction'),
-            onPressed: _submitData,
-          )
-        ],
+        ),
       ),
     );
   }
