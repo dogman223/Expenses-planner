@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
 import './widgets/chart.dart';
 import './model/transaction.dart';
 import './widgets/transactions_list.dart';
@@ -83,6 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
       title: const Text('Personal Expenses'),
       //Using of my choosed primary color
       backgroundColor: Theme.of(context).primaryColor,
+      actions: <Widget>[
+        IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
     );
     final listWidget = Container(
         height: (MediaQuery.of(context).size.height -
@@ -101,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   children: <Widget>[
                     Text('Show chart'),
-                    Switch(
+                    Switch.adaptive(
                         value: _showChart,
                         onChanged: (value) {
                           setState(() {
@@ -131,8 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context)));
+        //If platform is IO, then floatingActionButton is not showing off:
+        floatingActionButton: Platform.isIOS
+            ? Container()
+            : FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context)));
   }
 }
