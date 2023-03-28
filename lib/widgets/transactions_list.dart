@@ -31,48 +31,27 @@ class TransactionsList extends StatelessWidget {
         : ListView.builder(
             itemBuilder: (context, index) {
               return Card(
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2)),
-                      padding: EdgeInsets.all(5),
-                      child: Text(
-                        '${transactions[index].amount.toStringAsFixed(2)} zł',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.all(8)),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          transactions[index].title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                        Text(
-                          DateFormat('dd-MM-yyyy')
-                              .format(transactions[index].date),
-                          style: TextStyle(color: Colors.grey, fontSize: 13),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: IconButton(
-                        onPressed: () =>
-                            deleteTransaction(transactions[index].id),
-                        icon: Icon(Icons.delete),
-                        color: Theme.of(context).errorColor,
-                      ),
-                    )
-                  ],
+                elevation: 5,
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: FittedBox(
+                            child: Text('${transactions[index].amount}')),
+                      )),
+                  title: Text(
+                    transactions[index].title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  subtitle: Text(
+                    DateFormat.yMd().format(transactions[index].date),
+                  ),
+                  trailing: IconButton(
+                      onPressed: () =>
+                          deleteTransaction(transactions[index].id),
+                      icon: Icon(Icons.delete)),
                 ),
               );
             },
