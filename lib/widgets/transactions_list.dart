@@ -22,7 +22,7 @@ class TransactionsList extends StatelessWidget {
                 ),
                 Container(
                     height: constraints.maxHeight * 0.6,
-                    margin: EdgeInsets.all(30),
+                    margin: const EdgeInsets.all(20),
                     child: Image.asset('assets/images/waiting.png',
                         fit: BoxFit.cover))
               ],
@@ -32,7 +32,7 @@ class TransactionsList extends StatelessWidget {
             itemBuilder: (context, index) {
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 child: ListTile(
                   leading: CircleAvatar(
                       radius: 30,
@@ -51,7 +51,7 @@ class TransactionsList extends StatelessWidget {
                   trailing: IconButton(
                       onPressed: () =>
                           deleteTransaction(transactions[index].id),
-                      icon: Icon(Icons.delete)),
+                      icon: const Icon(Icons.delete)),
                 ),
               );
             },

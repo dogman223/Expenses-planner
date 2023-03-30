@@ -64,13 +64,13 @@ class _NewTransactionState extends State<NewTransaction> {
             children: <Widget>[
               //Title of transaction input:
               TextField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 controller: _titleController,
                 onSubmitted: (_) => _submitData(),
               ),
               //Amount of transaction input:
               TextField(
-                decoration: InputDecoration(labelText: 'Amount'),
+                decoration: const InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 onSubmitted: (_) => _submitData(),
@@ -84,7 +84,8 @@ class _NewTransactionState extends State<NewTransaction> {
                         : 'Picked Date: ${DateFormat('dd-MM-yyyy').format(_selectedDate)}'),
                   ),
                   TextButton(
-                      onPressed: _presentDatePicker, child: Text("Choose date"))
+                      onPressed: _presentDatePicker,
+                      child: const Text("Choose date"))
                 ],
               ),
               //Add transaction submit button:

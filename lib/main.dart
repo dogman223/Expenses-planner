@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter App',
+        title: 'Personal Expenses',
         home: MyHomePage(),
         theme: ThemeData(
           primarySwatch: Colors.purple,
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
               titleTextStyle: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 20,
@@ -83,12 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
         MediaQuery.of(context).orientation == Orientation.landscape;
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text('Personal Expenses'),
+            middle: const Text('Personal Expenses'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
-                    child: Icon(CupertinoIcons.add),
+                    child: const Icon(CupertinoIcons.add),
                     onTap: () => _startAddNewTransaction(context))
               ],
             ),
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
             actions: <Widget>[
               IconButton(
                   onPressed: () => _startAddNewTransaction(context),
-                  icon: Icon(Icons.add))
+                  icon: const Icon(Icons.add))
             ],
           );
     final listWidget = Container(
@@ -109,7 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 MediaQuery.of(context).padding.top) *
             0.7,
         child: TransactionsList(_transactions, _deleteTransaction));
-    final pageBody = SingleChildScrollView(
+    final pageBody = SafeArea(
+        child: SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -117,7 +118,10 @@ class _MyHomePageState extends State<MyHomePage> {
           if (isLandscape)
             Row(
               children: <Widget>[
-                Text('Show chart'),
+                Text(
+                  'Show chart',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 Switch.adaptive(
                     value: _showChart,
                     onChanged: (value) {
@@ -146,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 : listWidget
         ],
       ),
-    );
+    ));
     return Platform.isIOS
         ? CupertinoPageScaffold(
             child: pageBody,
@@ -161,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
             floatingActionButton: Platform.isIOS
                 ? Container()
                 : FloatingActionButton(
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                     onPressed: () => _startAddNewTransaction(context)));
   }
 }
