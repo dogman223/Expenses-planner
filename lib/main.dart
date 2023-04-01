@@ -117,33 +117,40 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
+  Widget _showIoAppBar() {
+    return CupertinoNavigationBar(
+      middle: const Text('Personal Expenses'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+              child: const Icon(CupertinoIcons.add),
+              onTap: () => _startAddNewTransaction(context))
+        ],
+      ),
+    );
+  }
+
+  Widget _showAndroidAppBar() {
+    return AppBar(
+      title: const Text('Personal Expenses'),
+      //Using of my choosed primary color
+      backgroundColor: Theme.of(context).primaryColor,
+      actions: <Widget>[
+        IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: const Icon(Icons.add))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    final PreferredSizeWidget appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: const Text('Personal Expenses'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                    child: const Icon(CupertinoIcons.add),
-                    onTap: () => _startAddNewTransaction(context))
-              ],
-            ),
-          )
-        : AppBar(
-            title: const Text('Personal Expenses'),
-            //Using of my choosed primary color
-            backgroundColor: Theme.of(context).primaryColor,
-            actions: <Widget>[
-              IconButton(
-                  onPressed: () => _startAddNewTransaction(context),
-                  icon: const Icon(Icons.add))
-            ],
-          );
+    final PreferredSizeWidget appBar =
+        Platform.isIOS ? _showIoAppBar() : _showAndroidAppBar();
     final listWidget = Container(
         height: (MediaQuery.of(context).size.height -
                 appBar.preferredSize.height -
