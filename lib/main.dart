@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         home: MyHomePage(),
         theme: ThemeData(
           primarySwatch: Colors.purple,
+          errorColor: Colors.red,
           appBarTheme: const AppBarTheme(
               titleTextStyle: TextStyle(
                   fontFamily: 'OpenSans',
@@ -76,6 +77,46 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  List<Widget> _buildLandscapeMode(AppBar appBar, Widget listWidget) {
+    return [
+      Row(
+        children: <Widget>[
+          Text(
+            'Show chart',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          Switch.adaptive(
+              value: _showChart,
+              onChanged: (value) {
+                setState(() {
+                  _showChart = value;
+                });
+              })
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: Chart(_recentTransactions))
+          : listWidget
+    ];
+  }
+
+  List<Widget> _buildPortraitMode(AppBar appBar, Widget listWidget) {
+    return [
+      Container(
+          height: (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top) *
+              0.3,
+          child: Chart(_recentTransactions)),
+      listWidget
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -111,46 +152,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: TransactionsList(_transactions, _deleteTransaction));
     final pageBody = SafeArea(
         child: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          if (isLandscape)
-            Row(
-              children: <Widget>[
-                Text(
-                  'Show chart',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                Switch.adaptive(
-                    value: _showChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    })
-              ],
-            ),
-          if (!isLandscape)
-            Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.3,
-                child: Chart(_recentTransactions)),
-          if (!isLandscape) listWidget,
-          if (isLandscape)
-            _showChart
-                ? Container(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
-                        0.7,
-                    child: Chart(_recentTransactions))
-                : listWidget
-        ],
-      ),
-    ));
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+          if (isLandscape) ..._buildLandscapeMode(appBar, listWidget),
+          if (!isLandscape) ..._buildPortraitMode(appBar, listWidget),
+        ])));
     return Platform.isIOS
         ? CupertinoPageScaffold(
             child: pageBody,
