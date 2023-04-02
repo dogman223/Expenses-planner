@@ -37,11 +37,20 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final List<Transaction> _transactions = [
     //Transaction(id: 'T1', title: "Test1", amount: 99.99, date: DateTime.now())
   ];
   bool _showChart = false;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {}
+
+  @override
+  dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
@@ -117,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  Widget _showIoAppBar() {
+  Widget _buildIoAppBar() {
     return CupertinoNavigationBar(
       middle: const Text('Personal Expenses'),
       trailing: Row(
@@ -131,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _showAndroidAppBar() {
+  Widget _buildAndroidAppBar() {
     return AppBar(
       title: const Text('Personal Expenses'),
       //Using of my choosed primary color
@@ -150,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
     final PreferredSizeWidget appBar =
-        Platform.isIOS ? _showIoAppBar() : _showAndroidAppBar();
+        Platform.isIOS ? _buildIoAppBar() : _buildAndroidAppBar();
     final listWidget = Container(
         height: (MediaQuery.of(context).size.height -
                 appBar.preferredSize.height -
