@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import './widgets/chart.dart';
@@ -43,15 +42,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   ];
   bool _showChart = false;
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {}
-
-  @override
-  dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
       return transaction.date
@@ -77,13 +67,23 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     });
   }
 
-  //Start new transaction function that shows sheet that allows to add new transaction
+  //Start new transaction function that shows sheet which allows to add new transaction
   void _startAddNewTransaction(BuildContext cxt) {
     showModalBottomSheet(
         context: cxt,
         builder: (_) {
           return NewTransaction(_addNewTransaction);
         });
+  }
+
+  //Method build Container with transactions for each mode:
+  Widget buildContainer(double number, AppBar appBar) {
+    return Container(
+        height: (MediaQuery.of(context).size.height -
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top) *
+            number,
+        child: Chart(_recentTransactions));
   }
 
   List<Widget> _buildLandscapeMode(AppBar appBar, Widget listWidget) {
@@ -103,27 +103,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               })
         ],
       ),
-      _showChart
-          ? Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.7,
-              child: Chart(_recentTransactions))
-          : listWidget
+      _showChart ? buildContainer(0.7, appBar) : listWidget
     ];
   }
 
   List<Widget> _buildPortraitMode(AppBar appBar, Widget listWidget) {
-    return [
-      Container(
-          height: (MediaQuery.of(context).size.height -
-                  appBar.preferredSize.height -
-                  MediaQuery.of(context).padding.top) *
-              0.3,
-          child: Chart(_recentTransactions)),
-      listWidget
-    ];
+    return [buildContainer(0.3, appBar), listWidget];
   }
 
   Widget _buildIoAppBar() {
