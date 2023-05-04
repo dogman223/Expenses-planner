@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         ],
       ),
       _showChart
-          ? Container(
+          ? SizedBox(
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
@@ -106,12 +106,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   List<Widget> _buildPortraitMode(AppBar appBar, Widget listWidget) {
     return [
-      Container(
+      SizedBox(
           height: (MediaQuery.of(context).size.height -
                   appBar.preferredSize.height -
                   MediaQuery.of(context).padding.top) *
               0.3,
-          child: Chart(_recentTransactions))
+          child: Chart(_recentTransactions)),
+      listWidget
     ];
   }
 
@@ -149,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         MediaQuery.of(context).orientation == Orientation.landscape;
     final PreferredSizeWidget appBar =
         Platform.isIOS ? _buildIoAppBar() : _buildAndroidAppBar();
-    final listWidget = Container(
+    final listWidget = SizedBox(
         height: (MediaQuery.of(context).size.height -
                 appBar.preferredSize.height -
                 MediaQuery.of(context).padding.top) *
@@ -166,8 +167,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         ])));
     return Platform.isIOS
         ? CupertinoPageScaffold(
-            child: pageBody,
             navigationBar: appBar,
+            child: pageBody,
           )
         : Scaffold(
             appBar: appBar,
