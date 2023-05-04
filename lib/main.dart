@@ -76,16 +76,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         });
   }
 
-  //Method build Container with transactions for each mode:
-  Widget buildContainer(double number, AppBar appBar) {
-    return Container(
-        height: (MediaQuery.of(context).size.height -
-                appBar.preferredSize.height -
-                MediaQuery.of(context).padding.top) *
-            number,
-        child: Chart(_recentTransactions));
-  }
-
   List<Widget> _buildLandscapeMode(AppBar appBar, Widget listWidget) {
     return [
       Row(
@@ -103,12 +93,26 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               })
         ],
       ),
-      _showChart ? buildContainer(0.7, appBar) : listWidget
+      _showChart
+          ? Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: Chart(_recentTransactions))
+          : listWidget
     ];
   }
 
   List<Widget> _buildPortraitMode(AppBar appBar, Widget listWidget) {
-    return [buildContainer(0.3, appBar), listWidget];
+    return [
+      Container(
+          height: (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top) *
+              0.3,
+          child: Chart(_recentTransactions))
+    ];
   }
 
   Widget _buildIoAppBar() {
