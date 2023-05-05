@@ -31,15 +31,15 @@ class ChartBar extends StatelessWidget {
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1.0),
                         color: const Color.fromRGBO(220, 220, 220, 1),
-                        //Promień obramowania dla zaokrąglonych rogów
+                        //Border radius for circular corner
                         borderRadius: BorderRadius.circular(10))),
                 FractionallySizedBox(
                   heightFactor: spendingPercentageOfTotal,
                   child: Container(
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
-                        //Druga granica obramowania o takich samych wymiarach,
-                        //aby oba kontenery pasowały do siebie w odniesieniu do granic i krawędzi:
+                        //Second container with circular border coners,
+                        //with the same measures, both containers have to fit to each other:
                         borderRadius: BorderRadius.circular(10)),
                   ),
                 )
